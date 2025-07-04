@@ -1,4 +1,13 @@
 @import "tailwindcss";
 
+.poppins {
+  font-family: var(--font-poppins), sans-serif;
+}
 
+.montserrat {
+  font-family: var(--font-montserrat), sans-serif;
+}
 
+.doodle {
+  font-family: var(--font-doodle), cursive;
+}

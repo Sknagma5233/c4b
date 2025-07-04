@@ -32,6 +32,7 @@ function Navbar() {
     </div>
    
     {/* navbar ends here */}
+      
     </>
   )
 }

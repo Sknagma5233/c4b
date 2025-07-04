@@ -2,9 +2,11 @@ import React from 'react'
 
 function About() {
   return (
-    <div>
-      This is about page
-    </div>
+ <div className="w-full h-screen bg-[url('/images/bgImage.png')] bg-cover bg-center">
+
+</div>
+
+
   )
 }
 
