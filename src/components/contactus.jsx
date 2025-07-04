@@ -2,9 +2,9 @@ import React from 'react'
 
 function Contactus() {
   return (
-    <div>
-      This is contact us page
-    </div>
+    <div className="w-full h-screen bg-[url('/images/bgImage.png')] bg-cover bg-center">
+
+</div>
   )
 }
 
