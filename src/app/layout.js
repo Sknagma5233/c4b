@@ -1,54 +1,37 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-// app/layout.tsx or pages/_app.tsx for older Next.js versions
-import './globals.css';
-import { Poppins, Montserrat, Rubik_Doodle_Shadow } from 'next/font/google';
+import { Inter } from "next/font/google"
+import "./globals.css"
 
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-poppins',
-});
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-montserrat',
-});
-
-const rubikDoodle = Rubik_Doodle_Shadow({
-  subsets: ['latin'],
-  weight: '400',
-  variable: '--font-doodle',
-});
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: 'My App',
-  description: 'Example App',
-};
-
-
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-
+  title: "Code4Bharat - Cutting-Edge IT Solutions",
+  description:
+    "Unlock your full potential with our tailored technology services. From innovative software development to robust cybersecurity, we empower your business to thrive in the digital age.",
+  keywords: "web development, mobile apps, IT solutions, software development, digital transformation, Code4Bharat",
+  authors: [{ name: "Code4Bharat Team" }],
+  creator: "Code4Bharat",
+  publisher: "Code4Bharat",
+  robots: "index, follow",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://code4bharat.com",
+    title: "Code4Bharat - Cutting-Edge IT Solutions",
+    description:
+      "Unlock your full potential with our tailored technology services. From innovative software development to robust cybersecurity, we empower your business to thrive in the digital age.",
+    siteName: "Code4Bharat",
+  },
+}
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${montserrat.variable} ${rubikDoodle.variable} antialiased`}
-      >
-      {children}
-      </body>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
+      <body className={inter.className}>{children}</body>
     </html>
-  );
+  )
 }
