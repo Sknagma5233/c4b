@@ -5,7 +5,8 @@ import { motion } from "framer-motion"
 import { ArrowRight, Zap, Users, Award } from "lucide-react"
 import Navbar from "@/components/navbar"
 
-function Home() {
+
+function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   // Mouse tracking for interactive background
@@ -98,9 +99,10 @@ function Home() {
   ]
 
   return (
-  
     <div className="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 min-h-screen relative overflow-hidden">
+      {/* Your Navbar Component */}
       <Navbar/>
+
       {/* Animated Background Pattern */}
       <div className="absolute inset-0 z-0">
         {/* Geometric Pattern Background */}
@@ -320,4 +322,4 @@ function Home() {
   )
 }
 
-export default Home
+export default Hero
