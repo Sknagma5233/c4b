@@ -47,7 +47,6 @@ function Services() {
     }
   ];
   
-
   const toggleCard = (index) => {
     if (expandedCard === index) {
       // Collapse animation
@@ -139,6 +138,7 @@ function Services() {
     }
   };
 
+
   return (
     <div className="w-full min-h-screen bg-[url('/images/bgImage.png')] bg-cover bg-center bg-fixed">
       <Navbar />
@@ -151,7 +151,7 @@ function Services() {
             <div 
               key={index}
               ref={el => cardRefs.current[index] = el}
-              className="bg-white/90 backdrop-blur-md rounded-xl shadow-lg overflow-hidden relative pb-12"
+              className="bg-white/90 backdrop-blur-md rounded-xl shadow-lg overflow-hidden relative"
               style={{ height: expandedCard === index ? "auto" : "200px" }}
             >
               {/* Blue overlay */}
@@ -166,6 +166,18 @@ function Services() {
                   transformOrigin: 'right bottom'
                 }}
               />
+              
+              {/* Back button (top right, only shown when expanded) */}
+              {expandedCard === index && (
+                <div 
+                  onClick={() => toggleCard(index)}
+                  className="absolute right-4 top-4 z-30"
+                >
+                  <button className="bg-gray-200 text-gray-800 hover:bg-gray-300 px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                    Back
+                  </button>
+                </div>
+              )}
               
               <div className="relative z-20 p-6">
                 <h3 className="text-2xl font-bold text-gray-800 mb-2">{service.title}</h3>
@@ -183,25 +195,17 @@ function Services() {
                 )}
               </div>
               
-              {/* Half-circle trigger with text */}
-              <div 
-                ref={el => triggerRefs.current[index] = el}
-                onClick={() => toggleCard(index)}
-                className={`
-                  absolute right-2 bottom-0
-                  w-24 h-10 rounded-t-full 
-                  flex items-center justify-center
-                  cursor-pointer transition-colors z-30
-                  ${expandedCard === index 
-                    ? "bg-gray-200 text-gray-800 hover:bg-gray-300" 
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                  }
-                `}
-              >
-                <span className="text-xs font-medium px-2">
-                  {expandedCard === index ? "Show Less" : "Read More"}
-                </span>
-              </div>
+              {/* Read More half-circle (bottom right, only shown when collapsed) */}
+              {!expandedCard && (
+                <div 
+                  onClick={() => toggleCard(index)}
+                  className="absolute -right-9 bottom-0 w-32 h-18 rounded-t-full bg-blue-500 hover:bg-blue-600 flex items-center justify-center cursor-pointer z-30"
+                >
+                  <span className="text-xs absolute right-12 bottom-6 text-center font-medium text-white">
+                    Read More
+                  </span>
+                </div>
+              )}
             </div>
           ))}
         </div>
