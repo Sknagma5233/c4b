@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Navbar from './navbar';
 import gsap from 'gsap';
 
@@ -8,204 +8,206 @@ function Services() {
   const cardRefs = useRef([]);
   const overlayRefs = useRef([]);
   const triggerRefs = useRef([]);
-   const services = [
-    {
+  const textRef = useRef(null);
+
+  const services = [
+    { 
+      image:"https://code4bharat.com/images/Web%20development.png",
       title: "Web Development",
-      shortDesc: "Build modern, responsive websites",
-      fullDesc: "We create blazing fast websites with React, Next.js and modern CSS. Our web solutions include e-commerce platforms, corporate websites, and web applications with full backend integration.",
+      shortDesc: "We create responsive and dynamic websites tailored to your business needs.",
+      fullDesc: "We deliver exceptional web development services tailored to meet business needs. From responsive websites to complex web apps, we do it all.",
       features: [
-        "React/Next.js development",
-        "Responsive design",
-        "API integration",
-        "Performance optimization",
-        "SEO friendly"
-      ]
+        "Custom Website Development",
+        "E-commerce Platforms",
+        "CMS Systems",
+        "Web Applications",
+      ],
+      shortDes: "All websites we create are SEO-optimized and user-friendly.",
+      date: "Launched: January 2023"
     },
     {
+      image: "https://code4bharat.com/images/App%20development.png",
       title: "App Development",
       shortDesc: "Native and cross-platform mobile apps",
-      fullDesc: "From concept to App Store, we build beautiful mobile applications for both iOS and Android using React Native and Flutter for cross-platform solutions.",
+      fullDesc: "From concept to deployment, we build stunning mobile apps for both iOS and Android using React Native and Flutter.",
       features: [
-        "iOS & Android apps",
-        "React Native/Flutter",
-        "UI/UX design",
-        "Backend integration",
-        "App store deployment"
-      ]
+        "iOS & Android Apps",
+        "React Native / Flutter",
+        "UI/UX Design",
+        "Backend Integration",
+        "Deployment"
+      ],
+      shortDes: "Our apps are fast, scalable, and user-friendly.",
+      date: "Launched: March 2023"
     },
     {
+      image: "https://code4bharat.com/images/UIUX%20design.png",
       title: "UI/UX Design",
       shortDesc: "Beautiful, intuitive interfaces",
-      fullDesc: "Our design team creates pixel-perfect interfaces with Figma and Adobe XD, focusing on user experience and conversion optimization.",
+      fullDesc: "Our designers create pixel-perfect UI/UX using Figma and Adobe XD, ensuring top-notch user experience.",
       features: [
-        "Figma/Adobe XD designs",
-        "User research",
+        "Figma / Adobe XD",
+        "User Research",
         "Prototyping",
-        "Design systems",
-        "Usability testing"
-      ]
+        "Design Systems",
+        "Usability Testing"
+      ],
+      shortDes: "We blend aesthetics with functionality.",
+      date: "Launched: May 2023"
     }
   ];
-  
+
+  useEffect(() => {
+    gsap.from(textRef.current, {
+      opacity: 0,
+      y: 30,
+      duration: 1,
+      delay: 0.5,
+      ease: "power2.out"
+    });
+  }, []);
+
   const toggleCard = (index) => {
     if (expandedCard === index) {
-      // Collapse animation
+      // Collapse
       gsap.to(overlayRefs.current[index], {
         scale: 0,
-        borderRadius: "100%",
-        width: "4rem",
-        height: "2rem",
-        x: "-1.5rem",
-        y: "-1rem",
         duration: 1.2,
         ease: "power2.inOut"
       });
-      
       gsap.to(cardRefs.current[index], {
-        height: 200,
-        duration: 0.8,
-        ease: "power2.inOut"
+        height: 300,
+        duration: 0.8
       });
-      
       gsap.to(triggerRefs.current[index], {
         y: 0,
-        duration: 0.8,
-        ease: "power2.inOut"
+        duration: 0.8
       });
-      
       setExpandedCard(null);
     } else {
-      // First collapse any open card
+      // Collapse any open card first
       if (expandedCard !== null) {
         gsap.to(overlayRefs.current[expandedCard], {
           scale: 0,
-          borderRadius: "100%",
-          width: "4rem",
-          height: "2rem",
-          x: "-1.5rem",
-          y: "-1rem",
-          duration: 0.8,
-          ease: "power2.inOut"
+          duration: 0.8
         });
         gsap.to(cardRefs.current[expandedCard], {
-          height: 200,
-          duration: 0.6,
-          ease: "power2.inOut"
+          height: 300,
+          duration: 0.6
         });
         gsap.to(triggerRefs.current[expandedCard], {
           y: 0,
-          duration: 0.6,
-          ease: "power2.inOut"
+          duration: 0.6
         });
       }
-      
-      // Then expand the new card
+      // Expand the clicked card
       setExpandedCard(index);
-      
-      // Bubble expansion animation
       gsap.fromTo(overlayRefs.current[index], 
-        {
-          scale: 0,
-          opacity: 1,
-          transformOrigin: "right bottom",
-          borderRadius: "100%",
-          width: "4rem",
-          height: "2rem",
-          x: "-1.5rem",
-          y: "-1rem"
-        },
-        { 
-          scale: 25,
-          borderRadius: "0.75rem",
-          duration: 1.2,
-          ease: "power2.out"
-        }
+        { scale: 0 },
+        { scale: 25, duration: 1.2, ease: "power2.out" }
       );
-      
-      // Move trigger to top
       gsap.to(triggerRefs.current[index], {
-        y: -378,
-        duration: 0.8,
-        ease: "power2.out"
+        y: -400,
+        duration: 0.8
       });
-      
       gsap.to(cardRefs.current[index], {
         height: "auto",
         duration: 0.8,
-        delay: 0.2,
-        ease: "power2.out"
+        delay: 0.2
       });
     }
   };
 
-
   return (
-    <div className="w-full min-h-screen bg-[url('/images/bgImage.png')] bg-cover bg-center bg-fixed">
+    <div className="w-full min-h-screen bg-[url('https://via.placeholder.com/1600x1000')] bg-cover bg-center bg-fixed">
       <Navbar />
-      
+
+      {/* Big heading section */}
+      <div className='w-full mt-10 flex justify-center items-center bg-white/90 py-10'>
+        <p ref={textRef} className="text-4xl font-bold text-blue-600 text-center">
+          Our Services - Empowering Businesses Through Innovation
+        </p>
+      </div>
+
+      {/* Cards section */}
       <div className="container mx-auto px-4 py-16">
-        <h1 className="text-4xl font-bold text-center text-white mb-12">Our Services</h1>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-center text-blue-600 mb-10">Our Services</h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-13 bg-blue-800 my-8">
           {services.map((service, index) => (
-            <div 
+            <div
               key={index}
               ref={el => cardRefs.current[index] = el}
-              className="bg-white/90 backdrop-blur-md rounded-xl shadow-lg overflow-hidden relative"
-              style={{ height: expandedCard === index ? "auto" : "200px" }}
+              className="bg-white/90 backdrop-blur-md rounded-xl shadow-lg relative flex flex-col transition-all duration-300 overflow-hidden"
+              style={{ height: expandedCard === index ? "auto" : "300px" }}
             >
-              {/* Blue overlay */}
-              <div 
+              {/* Animated overlay */}
+              <div
                 ref={el => overlayRefs.current[index] = el}
                 className="absolute right-0 bottom-0 bg-blue-500/20 z-10"
                 style={{
                   width: '4rem',
                   height: '2rem',
-                  borderRadius: '100% 100% 0 0',
-                  scale: 0,
-                  transformOrigin: 'right bottom'
+                  borderRadius: '100%',
+                  transformOrigin: 'right bottom',
+                  scale: 0
                 }}
               />
-              
-              {/* Back button (top right, only shown when expanded) */}
-              {expandedCard === index && (
-                <div 
-                  onClick={() => toggleCard(index)}
-                  className="absolute right-4 top-4 z-30"
-                >
-                  <button className="bg-gray-200 text-gray-800 hover:bg-gray-300 px-4 py-2 rounded-md text-sm font-medium transition-colors">
-                    Back
-                  </button>
+
+              {/* Card Content */}
+              <div className="relative z-20 h-full flex flex-col">
+                {/* Image */}
+                <div className="h-[150px] flex-shrink-0 bg-gray-100 flex justify-center items-center">
+                  <img 
+                    src={service.image}
+                    alt={service.title}
+                    className="object-contain h-full p-4"
+                  />
                 </div>
-              )}
-              
-              <div className="relative z-20 p-6">
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">{service.title}</h3>
-                <p className="text-gray-600 mb-4">{service.shortDesc}</p>
-                
+
+                {/* Basic Info */}
+                <div className="p-4 text-center">
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">{service.title}</h3>
+                  <p className="text-gray-600 text-sm mb-2">{service.shortDesc}</p>
+                  <p className="text-gray-500 text-xs">{service.date}</p>
+                </div>
+
+                {/* Full info (on expand) */}
                 {expandedCard === index && (
-                  <div className="animate-fadeIn">
-                    <p className="text-gray-600 mb-4">{service.fullDesc}</p>
-                    <ul className="list-disc pl-5 text-gray-600 mb-4 space-y-1">
-                      {service.features.map((feature, i) => (
-                        <li key={i}>{feature}</li>
+                  <div className="px-4 pb-6">
+                    <p className="text-gray-600 text-sm mb-3">{service.fullDesc}</p>
+                    <ul className="list-disc pl-5 text-gray-600 text-sm space-y-1 mb-3">
+                      {service.features.map((item, i) => (
+                        <li key={i}>{item}</li>
                       ))}
                     </ul>
+                    <p className="text-gray-600 text-sm">{service.shortDes}</p>
+                  </div>
+                )}
+
+                {/* Back button */}
+                {expandedCard === index && (
+                  <div 
+                    onClick={() => toggleCard(index)}
+                    className="absolute right-4 top-4 z-30"
+                  >
+                    <button className="bg-gray-200 text-gray-800 hover:bg-gray-300 px-3 py-1 rounded-md text-xs font-medium">
+                      Back
+                    </button>
+                  </div>
+                )}
+
+                {/* Read More Button */}
+                {expandedCard !== index && (
+                  <div
+                    ref={el => triggerRefs.current[index] = el}
+                    onClick={() => toggleCard(index)}
+                    className="absolute -right-10 bottom-0 w-32 h-14 rounded-t-full bg-blue-500 hover:bg-blue-600 flex justify-center items-center cursor-pointer z-30"
+                  >
+                    <span className="text-white text-sm font-medium">Read More</span>
                   </div>
                 )}
               </div>
-              
-              {/* Read More half-circle (bottom right, only shown when collapsed) */}
-              {!expandedCard && (
-                <div 
-                  onClick={() => toggleCard(index)}
-                  className="absolute -right-9 bottom-0 w-32 h-18 rounded-t-full bg-blue-500 hover:bg-blue-600 flex items-center justify-center cursor-pointer z-30"
-                >
-                  <span className="text-xs absolute right-12 bottom-6 text-center font-medium text-white">
-                    Read More
-                  </span>
-                </div>
-              )}
             </div>
           ))}
         </div>
