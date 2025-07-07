@@ -10,6 +10,7 @@ function Services() {
   const cardRefs = useRef([]);
   const overlayRefs = useRef([]);
   const triggerRefs = useRef([]);
+  const textRef = useRef(null)
 
   useEffect(() => {
       const handleMouseMove = (e) => {
