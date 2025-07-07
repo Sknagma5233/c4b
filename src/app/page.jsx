@@ -1,14 +1,16 @@
 import Navbar from '@/components/navbar'
+import Home from '@/components/home'
 import React from 'react'
 
-function Home() {
+function Hero() {
   return (
  <div className="w-full h-screen bg-[url('/images/bgImage.png')] bg-cover bg-center">
-  <Navbar/>
+  {/* <Navbar/> */}
+  <Home/>
 </div>
 
 
   )
 }
 
-export default Home
+export default Hero
