@@ -9,6 +9,8 @@ function Contactus() {
   // Refs declarations
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
+  const [isMounted, setIsMounted] = useState(false);
+
   const emailEmojiRef = useRef(null);
   const headingRef = useRef(null);
   const subheadingRef = useRef(null);
