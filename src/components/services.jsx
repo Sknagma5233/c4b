@@ -139,7 +139,7 @@ function Services() {
         </h1>
 
         <div className="w-full flex justify-center">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-blue-800 p-6 rounded-xl w-full max-w-[1280px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8  p-6 rounded-xl w-full max-w-[1280px]">
             {services.map((service, index) => (
               <div
                 key={index}
@@ -160,7 +160,7 @@ function Services() {
                 />
 
                 <div className="relative z-20 h-full flex flex-col">
-                  <div className="h-[150px] flex-shrink-0 bg-gray-100 flex justify-center items-center">
+                  <div className="h-[150px] flex-shrink-0 bg-white  flex justify-center items-center">
                     <img
                       src={service.image}
                       alt={service.title}
