@@ -1,446 +1,233 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
-import { motion } from "framer-motion";
+import React, { useRef, useState, useEffect } from "react";
 import Navbar from "./navbar";
 import gsap from "gsap";
-import { usePathname } from "next/navigation";
 
-function Contactus() {
-  // Refs declarations
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const containerRef = useRef(null);
-  const emailEmojiRef = useRef(null);
-  const headingRef = useRef(null);
-  const subheadingRef = useRef(null);
-  const formItemsRef = useRef([]);
-  const formRef = useRef(null);
-  const pathname = usePathname();
+function Services() {
+  const [expandedCard, setExpandedCard] = useState(null);
+  const cardRefs = useRef([]);
+  const overlayRefs = useRef([]);
+  const triggerRefs = useRef([]);
+  const textRef = useRef(null);
+
+  const services = [
+    {
+      image: "https://code4bharat.com/images/Web%20development.png",
+      title: "Web Development",
+      shortDesc:
+        "We create responsive and dynamic websites tailored to your business needs.",
+      fullDesc:
+        "We deliver exceptional web development services tailored to meet business needs. From responsive websites to complex web apps, we do it all.",
+      features: [
+        "Custom Website Development",
+        "E-commerce Platforms",
+        "CMS Systems",
+        "Web Applications",
+      ],
+      shortDes: "All websites we create are SEO-optimized and user-friendly.",
+      date: "Launched: January 2023",
+    },
+    {
+      image: "https://code4bharat.com/images/App%20development.png",
+      title: "App Development",
+      shortDesc: "Native and cross-platform mobile apps",
+      fullDesc:
+        "From concept to deployment, we build stunning mobile apps for both iOS and Android using React Native and Flutter.",
+      features: [
+        "iOS & Android Apps",
+        "React Native / Flutter",
+        "UI/UX Design",
+        "Backend Integration",
+        "Deployment",
+      ],
+      shortDes: "Our apps are fast, scalable, and user-friendly.",
+      date: "Launched: March 2023",
+    },
+    {
+      image: "https://code4bharat.com/images/UIUX%20design.png",
+      title: "UI/UX Design",
+      shortDesc: "Beautiful, intuitive interfaces",
+      fullDesc:
+        "Our designers create pixel-perfect UI/UX using Figma and Adobe XD, ensuring top-notch user experience.",
+      features: [
+        "Figma / Adobe XD",
+        "User Research",
+        "Prototyping",
+        "Design Systems",
+        "Usability Testing",
+      ],
+      shortDes: "We blend aesthetics with functionality.",
+      date: "Launched: May 2023",
+    },
+  ];
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    gsap.from(textRef.current, {
+      opacity: 0,
+      y: 30,
+      duration: 1,
+      delay: 0.5,
+      ease: "power2.out",
+    });
   }, []);
 
-  // Initialize GSAP animations
-  useEffect(() => {
-    setIsMounted(true);
-    if (containerRef.current) {
-      containerRef.current.style.opacity = '1';
-      containerRef.current.style.visibility = 'visible';
-    }
-  }, []);
-
-  // GSAP animations
-  useEffect(() => {
-    if (!isMounted) return;
-
-    const tl = gsap.timeline({
-      defaults: { ease: "power3.out" },
-      onStart: () => {
-        gsap.set(containerRef.current, { 
-          opacity: 1,
-          visibility: 'visible'
+  const toggleCard = (index) => {
+    if (expandedCard === index) {
+      gsap.to(overlayRefs.current[index], {
+        scale: 0,
+        duration: 1.2,
+        ease: "power2.inOut",
+      });
+      gsap.to(cardRefs.current[index], {
+        height: 300,
+        duration: 0.8,
+      });
+      gsap.to(triggerRefs.current[index], {
+        y: 0,
+        duration: 0.8,
+      });
+      setExpandedCard(null);
+    } else {
+      if (expandedCard !== null) {
+        gsap.to(overlayRefs.current[expandedCard], {
+          scale: 0,
+          duration: 0.8,
+        });
+        gsap.to(cardRefs.current[expandedCard], {
+          height: 300,
+          duration: 0.6,
+        });
+        gsap.to(triggerRefs.current[expandedCard], {
+          y: 0,
+          duration: 0.6,
         });
       }
-    });
-
-    // Container animation
-    tl.from(containerRef.current, {
-      opacity: 0,
-      duration: 0.5,
-      immediateRender: false,
-      onStart: () => {
-        gsap.set(containerRef.current, { visibility: 'visible' });
-      }
-    });
-
-    // Email emoji animation
-    tl.from(emailEmojiRef.current, {
-      y: -20,
-      opacity: 0,
-      duration: 0.8,
-      ease: "elastic.out(1, 0.5)",
-    });
-
-    // Text animations
-    tl.from([headingRef.current, subheadingRef.current], {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2,
-    });
-
-    // Form items animation
-    tl.from(
-      formItemsRef.current,
-      {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        delay: 0.2,
-      },
-      "-=0.5"
-    );
-
-    // Continuous emoji animation
-    gsap.to(emailEmojiRef.current, {
-      y: -5,
-      duration: 2,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-    });
-
-    // Mouse enter/leave handlers
-    const enterHandlers = [];
-    const leaveHandlers = [];
-
-    formItemsRef.current.forEach((item, index) => {
-      const enterHandler = () => {
-        gsap.to(item, { scale: 1.02, duration: 0.3 });
-      };
-      const leaveHandler = () => {
-        gsap.to(item, { scale: 1, duration: 0.3 });
-      };
-
-      item.addEventListener("mouseenter", enterHandler);
-      item.addEventListener("mouseleave", leaveHandler);
-
-      enterHandlers[index] = enterHandler;
-      leaveHandlers[index] = leaveHandler;
-    });
-
-    // Cleanup function
-    return () => {
-      formItemsRef.current.forEach((item, index) => {
-        if (item) {
-          item.removeEventListener("mouseenter", enterHandlers[index]);
-          item.removeEventListener("mouseleave", leaveHandlers[index]);
-        }
+      setExpandedCard(index);
+      gsap.fromTo(
+        overlayRefs.current[index],
+        { scale: 0 },
+        { scale: 25, duration: 1.2, ease: "power2.out" }
+      );
+      gsap.to(triggerRefs.current[index], {
+        y: -400,
+        duration: 0.8,
       });
-    };
-  }, [pathname, isMounted]);
-
-  // Form item ref adder
-  const addToFormItemsRef = (el) => {
-    if (el && !formItemsRef.current.includes(el)) {
-      formItemsRef.current.push(el);
+      gsap.to(cardRefs.current[index], {
+        height: "auto",
+        duration: 0.8,
+        delay: 0.2,
+      });
     }
   };
 
-  // Component return
   return (
-    <div className="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 min-h-screen relative overflow-hidden">
+    <div className="w-full min-h-screen bg-[url('https://via.placeholder.com/1600x1000')] bg-cover bg-center bg-fixed">
       <Navbar />
 
-      {/* Animated Background Pattern - Fixed throughout */}
-      <div className="fixed inset-0 z-0">
-        {/* Geometric Pattern Background */}
-        <div className="absolute inset-0 opacity-30">
-          <svg
-            className="w-full h-full"
-            viewBox="0 0 1000 1000"
-            preserveAspectRatio="xMidYMid slice"
-          >
-            <defs>
-              <pattern
-                id="grid"
-                width="50"
-                height="50"
-                patternUnits="userSpaceOnUse"
-              >
-                <path
-                  d="M 50 0 L 0 0 0 50"
-                  fill="none"
-                  stroke="#3b82f6"
-                  strokeWidth="0.5"
-                  opacity="0.3"
-                />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-            {/* Animated Circles */}
-            <motion.circle
-              cx="200"
-              cy="200"
-              r="100"
-              fill="none"
-              stroke="#3b82f6"
-              strokeWidth="2"
-              opacity="0.2"
-              animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
-              transition={{
-                duration: 8,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "linear",
-              }}
-            />
-            <motion.circle
-              cx="800"
-              cy="300"
-              r="80"
-              fill="none"
-              stroke="#1d4ed8"
-              strokeWidth="2"
-              opacity="0.2"
-              animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0] }}
-              transition={{
-                duration: 10,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "linear",
-              }}
-            />
-            <motion.circle
-              cx="600"
-              cy="700"
-              r="120"
-              fill="none"
-              stroke="#2563eb"
-              strokeWidth="2"
-              opacity="0.2"
-              animate={{ scale: [1, 1.3, 1], rotate: [0, -180, -360] }}
-              transition={{
-                duration: 12,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "linear",
-              }}
-            />
-            <motion.circle
-              cx="300"
-              cy="600"
-              r="90"
-              fill="none"
-              stroke="#1e40af"
-              strokeWidth="2"
-              opacity="0.15"
-              animate={{ scale: [1.1, 0.9, 1.1], rotate: [0, 270, 540] }}
-              transition={{
-                duration: 15,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "linear",
-              }}
-            />
-            <motion.circle
-              cx="700"
-              cy="150"
-              r="60"
-              fill="none"
-              stroke="#3730a3"
-              strokeWidth="2"
-              opacity="0.25"
-              animate={{ scale: [0.8, 1.4, 0.8], rotate: [540, 270, 0] }}
-              transition={{
-                duration: 9,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "linear",
-              }}
-            />
-          </svg>
-        </div>
-
-        {/* Mouse Following Gradient */}
-        <motion.div
-          className="absolute w-96 h-96 bg-gradient-to-r from-blue-400/20 to-blue-600/20 rounded-full blur-3xl"
-          animate={{
-            x: mousePosition.x - 192,
-            y: mousePosition.y - 192,
-          }}
-          transition={{ type: "spring", damping: 30, stiffness: 200 }}
-        />
-
-        {/* Additional floating gradients */}
-        <motion.div
-          className="absolute w-64 h-64 bg-gradient-to-r from-blue-300/15 to-blue-500/15 rounded-full blur-2xl"
-          animate={{
-            x: mousePosition.x * 0.5 - 128,
-            y: mousePosition.y * 0.3 - 128,
-          }}
-          transition={{ type: "spring", damping: 40, stiffness: 150 }}
-        />
+      <div className="w-full mt-10 flex justify-center items-center bg-white/90 py-10">
+        <p
+          ref={textRef}
+          className="text-4xl font-bold text-blue-600 text-center"
+        >
+          Our Services - Empowering Businesses Through Innovation
+        </p>
       </div>
 
-      <div
-        ref={containerRef}
-        className="w-full px-4 py-6" // Full width container
-      >
-        {/* Hero Section */}
-        <div className="max-w-6xl mx-auto">
-          <div className="py-8 flex flex-col items-center justify-center gap-4 mb-8">
-            <div ref={emailEmojiRef} className="text-9xl">📧</div>
-            <h1 ref={headingRef} className="text-3xl md:text-4xl font-bold text-center text-gray-800">
-              Contact us — we're here to help. Reach out anytime!
-            </h1>
-            <p ref={subheadingRef} className="text-md text-gray-600 text-center max-w-2xl">
-              Have questions or want to discuss a project? Fill out the form below.
-            </p>
-          </div>
-        </div>
+      <div className="container mx-auto px-4 py-16">
+        <h1 className="text-3xl md:text-4xl font-bold text-center text-blue-600 mb-10">
+          Our Services
+        </h1>
 
-        {/* Form Container */}
-        <div className="lg:w-[70vw] mx-auto bg-gradient-to-r from-white to-blue-300 py-8 rounded-md">
-          <div className="max-w-6xl mx-auto">
-            <form ref={formRef} className="py-6 px-6 flex flex-col lg:flex-row gap-8">
-              {/* Left Column */}
-              <div className="lg:w-1/4 flex flex-col gap-8">
-                <div ref={addToFormItemsRef}>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    First Name
-                  </label>
-                  <div className="input-container">
-                    <input
-                      type="text"
-                      placeholder="Enter your first name"
-                      className="w-full border-b-2 border-gray-300 bg-transparent focus:outline-none py-2 focus:border-blue-500 transition-colors"
+        <div className="w-full flex justify-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8  p-6 rounded-xl w-full max-w-[1280px]">
+            {services.map((service, index) => (
+              <div
+                key={index}
+                ref={(el) => (cardRefs.current[index] = el)}
+                className="bg-white/90 backdrop-blur-md rounded-xl shadow-lg relative flex flex-col transition-all duration-300 overflow-hidden"
+                style={{ height: expandedCard === index ? "auto" : "300px" }}
+              >
+                <div
+                  ref={(el) => (overlayRefs.current[index] = el)}
+                  className="absolute right-0 bottom-0 bg-blue-500/20 z-10"
+                  style={{
+                    width: "4rem",
+                    height: "2rem",
+                    borderRadius: "100%",
+                    transformOrigin: "right bottom",
+                    scale: 0,
+                  }}
+                />
+
+                <div className="relative z-20 h-full flex flex-col">
+                  <div className="h-[150px] flex-shrink-0 bg-white  flex justify-center items-center">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="object-contain h-full p-4"
                     />
                   </div>
-                </div>
 
-                <div ref={addToFormItemsRef}>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Last Name
-                  </label>
-                  <div className="input-container">
-                    <input
-                      type="text"
-                      placeholder="Enter your last name"
-                      className="w-full border-b-2 border-gray-300 bg-transparent focus:outline-none py-2 focus:border-blue-500 transition-colors"
-                    />
+                  <div className="p-4 text-center">
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-2">
+                      {service.shortDesc}
+                    </p>
+                    <p className="text-gray-500 text-xs">{service.date}</p>
                   </div>
-                </div>
 
-                <div ref={addToFormItemsRef}>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Email
-                  </label>
-                  <div className="input-container">
-                    <input
-                      type="email"
-                      placeholder="you@example.com"
-                      className="w-full border-b-2 border-gray-300 bg-transparent focus:outline-none py-2 focus:border-blue-500 transition-colors"
-                    />
-                  </div>
-                </div>
+                  {expandedCard === index && (
+                    <div className="px-4 pb-6">
+                      <p className="text-gray-600 text-sm mb-3">
+                        {service.fullDesc}
+                      </p>
+                      <ul className="list-disc pl-5 text-gray-600 text-sm space-y-1 mb-3">
+                        {service.features.map((item, i) => (
+                          <li key={i}>{item}</li>
+                        ))}
+                      </ul>
+                      <p className="text-gray-600 text-sm">
+                        {service.shortDes}
+                      </p>
+                    </div>
+                  )}
 
-                <div ref={addToFormItemsRef}>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Phone Number
-                  </label>
-                  <div className="input-container">
-                    <input
-                      type="tel"
-                      placeholder="+91 9876543210"
-                      className="w-full border-b-2 border-gray-300 bg-transparent focus:outline-none py-2 focus:border-blue-500 transition-colors"
-                    />
-                  </div>
+                  {expandedCard === index && (
+                    <div
+                      onClick={() => toggleCard(index)}
+                      className="absolute right-4 top-4 z-30"
+                    >
+                      <button className="bg-blue-500 text-white  px-3 py-3 rounded-md text-xs font-medium">
+                        Back
+                      </button>
+                    </div>
+                  )}
+
+                  {/* ✅ Semi-circle Read More */}
+               {expandedCard !== index && (
+  <div
+    ref={(el) => (triggerRefs.current[index] = el)}
+    onClick={() => toggleCard(index)}
+    className="absolute bottom-0 -right-8 w-28 h-12 md:h-14 rounded-t-full bg-blue-500 hover:bg-blue-600 flex justify-center items-center cursor-pointer z-30"
+  >
+    <span className="text-white text-[10px] font-medium pr-3">
+      Read More
+    </span>
+  </div>
+)}
+
+
                 </div>
               </div>
-
-              {/* Right Column */}
-              <div className="lg:w-1/2 flex flex-col gap-8">
-                <div ref={addToFormItemsRef}>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    What service are you looking for?
-                  </label>
-                  <div className="input-container">
-                    <select className="w-full border-b-2 border-gray-300 bg-transparent focus:outline-none py-2 focus:border-blue-500 transition-colors appearance-none">
-                      <option>Select a service</option>
-                      <option>Web Development</option>
-                      <option>App Development</option>
-                      <option>Consulting</option>
-                      <option>Design</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div ref={addToFormItemsRef}>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Where did you hear about us?
-                  </label>
-                  <div className="input-container">
-                    <select className="w-full border-b-2 border-gray-300 bg-transparent focus:outline-none py-2 focus:border-blue-500 transition-colors appearance-none">
-                      <option>Select an option</option>
-                      <option>Friend</option>
-                      <option>Social Media</option>
-                      <option>Search Engine</option>
-                      <option>Advertisement</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div ref={addToFormItemsRef} className="flex-1">
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Tell us more about your project
-                  </label>
-                  <div className="input-container h-full">
-                    <textarea
-                      placeholder="Provide detailed information about your project..."
-                      className="w-full h-full min-h-[150px] border-2 border-gray-200 rounded-lg p-3 bg-white/70 focus:outline-none focus:border-blue-500 transition-colors"
-                    ></textarea>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        {/* File Upload Section */}
-        <div className="max-w-6xl lg:w-[70vw] mx-auto px-4">
-          <div ref={addToFormItemsRef} className="mt-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Upload a file (optional)
-            </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-              <input type="file" className="hidden" id="file-upload" />
-              <label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center justify-center">
-                <svg className="w-12 h-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                </svg>
-                <p className="mt-2 text-sm text-gray-600">
-                  Click to upload or drag and drop
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  PDF, DOC, JPG, PNG up to 10MB
-                </p>
-              </label>
-            </div>
-            <p className="text-sm text-gray-500 mt-1">
-              Note: File uploads are not sent via WhatsApp.
-            </p>
-          </div>
-
-          {/* Submit Button */}
-          <div className="flex justify-center mt-8">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 active:scale-95"
-              onMouseEnter={(e) => {
-                gsap.to(e.target, {
-                  scale: 1.05,
-                  boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.2)",
-                  duration: 0.3,
-                });
-              }}
-              onMouseLeave={(e) => {
-                gsap.to(e.target, {
-                  scale: 1,
-                  boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
-                  duration: 0.3,
-                });
-              }}
-            >
-              Send Message
-            </button>
+            ))}
           </div>
         </div>
       </div>
     </div>
+    </div>
   );
 }
 
-export default Contactus;
+export default Services;
