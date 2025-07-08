@@ -1,121 +1,139 @@
 "use client"
-import React, { useState, useEffect } from "react"
 import { motion } from "framer-motion"
+import { HiOutlineGlobeAlt, HiOutlineUsers, HiOutlineClock, HiOutlineOfficeBuilding } from "react-icons/hi"
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa"
 import Navbar from "../components/navbar"
 
 function About() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-
-  // Mouse tracking for interactive background
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [])
-
-
-
-  
   return (
-    <div className="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 min-h-screen relative overflow-hidden">
+    <div className="bg-white min-h-screen">
       <Navbar />
 
-      {/* Animated Background Pattern - Fixed throughout */}
-      <div className="fixed inset-0 z-0">
-        {/* Geometric Pattern Background */}
-        <div className="absolute inset-0 opacity-30">
-          <svg className="w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
-                <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#3b82f6" strokeWidth="0.5" opacity="0.3" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-            {/* Animated Circles */}
-            <motion.circle
-              cx="200"
-              cy="200"
-              r="100"
-              fill="none"
-              stroke="#3b82f6"
-              strokeWidth="2"
-              opacity="0.2"
-              animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
-              transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-            <motion.circle
-              cx="800"
-              cy="300"
-              r="80"
-              fill="none"
-              stroke="#1d4ed8"
-              strokeWidth="2"
-              opacity="0.2"
-              animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0] }}
-              transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-            <motion.circle
-              cx="600"
-              cy="700"
-              r="120"
-              fill="none"
-              stroke="#2563eb"
-              strokeWidth="2"
-              opacity="0.2"
-              animate={{ scale: [1, 1.3, 1], rotate: [0, -180, -360] }}
-              transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-            <motion.circle
-              cx="300"
-              cy="600"
-              r="90"
-              fill="none"
-              stroke="#1e40af"
-              strokeWidth="2"
-              opacity="0.15"
-              animate={{ scale: [1.1, 0.9, 1.1], rotate: [0, 270, 540] }}
-              transition={{ duration: 15, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-            <motion.circle
-              cx="700"
-              cy="150"
-              r="60"
-              fill="none"
-              stroke="#3730a3"
-              strokeWidth="2"
-              opacity="0.25"
-              animate={{ scale: [0.8, 1.4, 0.8], rotate: [540, 270, 0] }}
-              transition={{ duration: 9, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-          </svg>
+      {/* Main Content */}
+      <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            {/* Left Column - Image */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="relative">
+                <img
+                  src="/placeholder.svg?height=600&width=500"
+                  alt="Code4Bharat Team Member"
+                  className="w-full h-auto object-cover rounded-lg"
+                />
+
+                {/* Decorative Element */}
+                <div className="absolute -top-4 -left-4 w-16 h-16 flex items-center justify-center">
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                      <div className="w-6 h-6 bg-black rounded-full relative">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-1 h-1 bg-white rounded-full"></div>
+                        </div>
+                        {/* Radiating lines */}
+                        {[...Array(12)].map((_, i) => (
+                          <div
+                            key={i}
+                            className="absolute w-0.5 h-2 bg-white origin-bottom"
+                            style={{
+                              transform: `rotate(${i * 30}deg)`,
+                              transformOrigin: "50% 100%",
+                              top: "-4px",
+                              left: "50%",
+                              marginLeft: "-1px",
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Social Media Icons */}
+              <div className="flex space-x-4 mt-8">
+                <motion.a
+                  href="#"
+                  className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors duration-200"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <FaTwitter className="w-5 h-5 text-gray-700" />
+                </motion.a>
+                <motion.a
+                  href="#"
+                  className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors duration-200"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <FaFacebookF className="w-4 h-4 text-gray-700" />
+                </motion.a>
+                <motion.a
+                  href="#"
+                  className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors duration-200"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <FaInstagram className="w-4 h-4 text-gray-700" />
+                </motion.a>
+                <motion.a
+                  href="#"
+                  className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors duration-200"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <FaLinkedinIn className="w-4 h-4 text-gray-700" />
+                </motion.a>
+              </div>
+            </motion.div>
+
+            {/* Right Column - Content */}
+            <motion.div
+              className="lg:pl-8"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              {/* Main Heading */}
+              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold text-gray-900 mb-12 tracking-tight">
+                ABOUT US
+              </h1>
+
+              {/* Content */}
+              <div className="space-y-6 text-gray-600 leading-relaxed">
+                <p className="text-lg">
+                  Code4Bharat started as a small internal design team in Bangalore, India. Today, we're a full-service
+                  digital agency with clients all over the world. We specialize in web development, mobile applications,
+                  and custom software solutions that help our clients and their customers achieve their goals.
+                </p>
+
+                <p className="text-lg">
+                  Our team consists of passionate developers, designers, and strategists committed to creating digital
+                  experiences that have lasting impact. We understand that technology is essential, but we never lose
+                  sight of the human element that makes great digital experiences possible.
+                </p>
+
+                <p className="text-lg">
+                  We believe in building long-term partnerships with our clients, providing ongoing support and
+                  innovative solutions that grow with their business needs.
+                </p>
+              </div>
+
+              {/* Decorative Line */}
+              <div className="mt-12 pt-8 border-t border-gray-200">
+                <div className="w-16 h-1 bg-black"></div>
+              </div>
+            </motion.div>
+          </div>
         </div>
-
-        {/* Mouse Following Gradient */}
-        <motion.div
-          className="absolute w-96 h-96 bg-gradient-to-r from-blue-400/20 to-blue-600/20 rounded-full blur-3xl"
-          animate={{
-            x: mousePosition.x - 192,
-            y: mousePosition.y - 192,
-          }}
-          transition={{ type: "spring", damping: 30, stiffness: 200 }}
-        />
-
-        {/* Additional floating gradients */}
-        <motion.div
-          className="absolute w-64 h-64 bg-gradient-to-r from-blue-300/15 to-blue-500/15 rounded-full blur-2xl"
-          animate={{
-            x: mousePosition.x * 0.5 - 128,
-            y: mousePosition.y * 0.3 - 128,
-          }}
-          transition={{ type: "spring", damping: 40, stiffness: 150 }}
-        />
       </div>
-
-  
     </div>
   )
 }
 
-export default About;
+export default About
