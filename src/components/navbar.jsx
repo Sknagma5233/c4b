@@ -26,7 +26,7 @@ function Navbar() {
   return (
     <>
       <div className="flex flex-col justify-center items-center">
-        <div className="bg-gradient-to-r from-white to-blue-300 shadow flex justify-between items-center px-4 py-2 rounded-3xl mt-4 w-[90vw] relative z-50">
+        <div className="bg-gradient-to-r from-white to-blue-300 shadow flex justify-between items-center px-8 py-6 rounded-3xl mt-4 w-[90vw] relative z-50">
           <Link href="/">
             <img
               className="w-[30vw] lg:w-[10vw] md:[20vw] sm:[20vw] cursor-pointer"

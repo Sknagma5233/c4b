@@ -2,7 +2,19 @@
 
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faLightbulb, faCode, faRocket, faHandshake, faStar } from "@fortawesome/free-solid-svg-icons"
+import {HiChevronLeft} from "react-icons/hi"
+import { HiChevronRight } from "react-icons/hi"
+import { HiStar } from "react-icons/hi"
+import { 
+  faLightbulb, 
+  faCode, 
+  faRocket, 
+  faHandshake, 
+  faStar,
+  faChevronLeft,
+  faChevronRight,
+  faQuoteLeft
+} from "@fortawesome/free-solid-svg-icons"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import {
@@ -13,7 +25,6 @@ import {
   HiShoppingCart,
   HiChartBar,
   HiTrendingUp,
-  HiChatAlt,
   HiSparkles,
 } from "react-icons/hi"
 import Navbar from "../components/navbar"
@@ -22,7 +33,78 @@ import Footer from "./footer"
 function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 })
-  const [testimonialsRef, testimonialsInView] = useInView({ triggerOnce: true, threshold: 0.2 })
+    const [openIndex, setOpenIndex] = useState(null);
+   const [slidesToShow, setSlidesToShow] = useState(1);
+
+useEffect(() => {
+  const handleResize = () => {
+    if (window.innerWidth >= 1024) {
+      setSlidesToShow(3); // Large screens
+    } else if (window.innerWidth >= 768) {
+      setSlidesToShow(2); // Medium screens
+    } else {
+      setSlidesToShow(1); // Small screens
+    }
+  };
+
+  handleResize(); // Initial call
+  window.addEventListener('resize', handleResize); // On resize
+
+  return () => window.removeEventListener('resize', handleResize); // Cleanup
+}, []);
+
+
+  // Testimonials data
+  const testimonials = [
+    {
+      id: 1,
+      name: "Neelesh Shukla",
+      position: "Education",
+      text: "Code4Bharat transformed our online operations with efficient,timely solutions and unmatched quality.",
+      rating: 5,
+      avatar: "https://code4bharat.com/_next/image?url=%2Fimages%2Ffaces%2Fpeoples_image1.webp&w=128&q=75"
+    },
+    {
+      id: 2,
+      name: "Utkarsh Tiwari",
+      position: "Hospitality",
+      text: "We 're thrilled with the custom CRM Code4Bharat delivered. Their attention to detail and support have grealty improved our....",
+      rating: 5,
+      avatar: "https://code4bharat.com/_next/image?url=%2Fimages%2Ffaces%2Fpeoples_image2.webp&w=128&q=75"
+    },
+    {
+      id: 3,
+      name: "Snehashish Datta",
+      position: "Real Estate",
+      text: "Code4Bharat's offshore development services exceeded our expectations. They delivered high-quality software solutions on time.",
+      rating: 4,
+      avatar: "https://code4bharat.com/_next/image?url=%2Fimages%2Ffaces%2Fpeoples_image3.webp&w=128&q=75"
+    },
+    {
+      id: 4,
+      name: "Varada Jadhav",
+      position: "Retail",
+      text: "The e-commerce platform developed by Code4Bharat revolutionized our online business. Sales increased by 300% within first quarter.",
+      rating: 5,
+      avatar: "https://code4bharat.com/_next/image?url=%2Fimages%2Ffaces%2Fpeoples_image4.webp&w=128&q=75"
+    },
+    {
+      id: 5,
+      name: "Isha Sawant",
+      position: "Healthcare",
+      text: "Code4Bharat's IT consulting services helped us streamline our operations and migrate to the cloud seamlessly.",
+      rating: 4,
+      avatar: "https://code4bharat.com/_next/image?url=%2Fimages%2Ffaces%2Fpeoples_image5.webp&w=128&q=75"
+    },
+    {
+      id: 6,
+      name: "Ankit Chaurasia",
+      position:"Manufacturing",
+      text: "The digital marketing strategies implemented by Code4Bharat significantly improved our online visibility.",
+      rating: 5,
+      avatar: "https://code4bharat.com/_next/image?url=%2Fimages%2Ffaces%2Fpeoples_image6.webp&w=128&q=75"
+    },
+  ]
 
   // Mouse tracking for background only
   useEffect(() => {
@@ -33,6 +115,29 @@ function Home() {
     return () => window.removeEventListener("mousemove", handleMouseMove)
   }, [])
 
+  // Navigation functions for testimonials
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) =>
+        prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
+
+  const prevTestimonials = () => {
+    setIndex((prevIndex) =>
+      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
+    );
+  };
+
+  const nextTestimonials = () => {
+    setIndex((prevIndex) =>
+      prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+    );
+  };
   // Animated Text Component - Only animates once on page load
   const AnimatedText = ({ text, className = "", delay = 0 }) => {
     const words = text.split(" ")
@@ -156,63 +261,6 @@ function Home() {
       icon: HiTrendingUp,
       gradient: "from-blue-600 to-blue-800",
       features: ["SEO Optimization", "Social Media", "Content Marketing", "Analytics"],
-    },
-  ]
-
-  const testimonials = [
-    {
-      id: 1,
-      name: "Rajesh Kumar",
-      position: "CEO, TechStart Solutions",
-      company: "Mumbai, India",
-      rating: 5,
-      text: "Code4Bharat transformed our business with their exceptional web development services. Their team delivered beyond our expectations, creating a modern, responsive website that significantly boosted our online presence.",
-      avatar: "/placeholder.svg?height=80&width=80",
-    },
-    {
-      id: 2,
-      name: "Priya Sharma",
-      position: "Founder, Digital Dreams",
-      company: "Delhi, India",
-      rating: 5,
-      text: "Working with Code4Bharat was a game-changer for our startup. Their mobile app development expertise helped us launch our product successfully. The team is professional, responsive, and truly understands client needs.",
-      avatar: "/placeholder.svg?height=80&width=80",
-    },
-    {
-      id: 3,
-      name: "Michael Johnson",
-      position: "CTO, Global Innovations",
-      company: "New York, USA",
-      rating: 5,
-      text: "Code4Bharat's offshore development services exceeded our expectations. They delivered high-quality software solutions on time and within budget. Their technical expertise and communication skills are outstanding.",
-      avatar: "/placeholder.svg?height=80&width=80",
-    },
-    {
-      id: 4,
-      name: "Anita Patel",
-      position: "Marketing Director, E-Shop Pro",
-      company: "Bangalore, India",
-      rating: 5,
-      text: "The e-commerce platform developed by Code4Bharat revolutionized our online business. Sales increased by 300% within the first quarter. Their attention to detail and user experience design is remarkable.",
-      avatar: "/placeholder.svg?height=80&width=80",
-    },
-    {
-      id: 5,
-      name: "David Chen",
-      position: "Operations Manager, Tech Solutions Inc",
-      company: "Singapore",
-      rating: 5,
-      text: "Code4Bharat's IT consulting services helped us streamline our operations and migrate to the cloud seamlessly. Their strategic approach and technical guidance were invaluable for our digital transformation.",
-      avatar: "/placeholder.svg?height=80&width=80",
-    },
-    {
-      id: 6,
-      name: "Sarah Williams",
-      position: "Brand Manager, Creative Agency",
-      company: "London, UK",
-      rating: 5,
-      text: "The digital marketing strategies implemented by Code4Bharat significantly improved our online visibility. Our website traffic increased by 250% and lead generation improved dramatically. Highly recommended!",
-      avatar: "/placeholder.svg?height=80&width=80",
     },
   ]
 
@@ -453,7 +501,69 @@ function Home() {
         </div>
       </section>
 
-      {/* Amazing Services Section - Same background as hero */}
+      {/* Testimonials Section */}
+      {/* Testimonials Section */}
+<section className="py-12 md:py-20 ">
+  <div className="container mx-auto px-4">
+    <h2 className="text-4xl md:text-3xl font-bold mb-12 text-center text-white">
+      What Our Clients Say
+    </h2>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-24 ">
+      {testimonials.map((testimonial) => (
+        <div 
+          key={testimonial.id} 
+          className="group h-64 [perspective:1000px]" // Tailwind perspective
+        >
+          {/* Card container with 3D effect */}
+          <div className="relative h-full w-full transition-all duration-1000 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+            {/* Front of Card */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-blue-900 rounded-lg shadow-md border-2 border-blue-100 [backface-visibility:hidden]">
+              <img
+                src={testimonial.avatar}
+                alt={`${testimonial.name}'s profile`}
+                className="w-20 h-20 rounded-full object-cover border-4 border-blue-100 mb-4"
+              />
+              <h3 className="text-xl font-semibold text-white">{testimonial.name}</h3>
+              <p className="text-sm text-white mb-2">{testimonial.position}</p>
+              <div className="flex">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <HiStar key={i} className="text-yellow-400" />
+                ))}
+              </div>
+            </div>
+            
+            {/* Back of Card */}
+            <div className="absolute inset-0 bg-white rounded-lg shadow-md p-6 border-2 border-blue-100 [transform:rotateY(180deg)] [backface-visibility:hidden] overflow-hidden">
+              <div className="h-full flex flex-col justify-center">
+                <svg 
+                  className="w-6 h-6 text-blue-400 opacity-30 mb-4" 
+                  fill="currentColor" 
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path 
+                    fillRule="evenodd" 
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3-12a1 1 0 10-2 0v4a1 1 0 01-1 1H8a1 1 0 100 2h2a3 3 0 003-3V6z" 
+                    clipRule="evenodd" 
+                  />
+                </svg>
+                <p className="text-gray-600 mb-4 italic">
+                  {testimonial.text}
+                </p>
+                <div className="mt-auto pt-4 border-t border-gray-100">
+                  <h3 className="font-semibold text-gray-800">{testimonial.name}</h3>
+                  <p className="text-sm text-blue-600">{testimonial.position}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+      {/* Amazing Services Section */}
       <section className="py-20 px-4 relative z-10 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 overflow-hidden">
         {/* Background Pattern for Services */}
         <div className="absolute inset-0 opacity-10">
@@ -510,8 +620,8 @@ function Home() {
               consulting, and robust e-commerce solutions tailored to your unique needs.
             </p>
           </motion.div>
-
-          {/* Services Grid - Enhanced */}
+           
+          {/* Services Grid */}
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             initial={{ opacity: 0, y: 50 }}
@@ -586,20 +696,14 @@ function Home() {
                     <p className="text-gray-600 mb-6 leading-relaxed group-hover:text-white/90 transition-colors duration-500">
                       {service.description}
                     </p>
-
                   </div>
                 </motion.div>
               </motion.div>
             ))}
           </motion.div>
-
-          
         </div>
       </section>
 
-      
-
-     
     </div>
   )
 }
