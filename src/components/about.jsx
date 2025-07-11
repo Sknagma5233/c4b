@@ -1,8 +1,9 @@
 "use client"
 import { motion } from "framer-motion"
-import { HiOutlineGlobeAlt, HiOutlineUsers, HiOutlineClock, HiOutlineOfficeBuilding } from "react-icons/hi"
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa"
 import Navbar from "../components/navbar"
+import Image from "next/image"
+import img1 from "../../public/images/img2.webp"
 
 function About() {
   return (
@@ -13,46 +14,19 @@ function About() {
       <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-            {/* Left Column - Image */}
             <motion.div
               className="relative"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <div className="relative">
-                <img
-                  src="/placeholder.svg?height=600&width=500"
-                  alt="Code4Bharat Team Member"
-                  className="w-full h-auto object-cover rounded-lg"
+              <div className="relative bg-red-300">
+                <Image
+                  src={img1}
+                  alt="Nagma"
+                  className="w-full h-[20rem] object-cover rounded-lg"
                 />
 
-                {/* Decorative Element */}
-                <div className="absolute -top-4 -left-4 w-16 h-16 flex items-center justify-center">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center">
-                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                      <div className="w-6 h-6 bg-black rounded-full relative">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                        </div>
-                        {/* Radiating lines */}
-                        {[...Array(12)].map((_, i) => (
-                          <div
-                            key={i}
-                            className="absolute w-0.5 h-2 bg-white origin-bottom"
-                            style={{
-                              transform: `rotate(${i * 30}deg)`,
-                              transformOrigin: "50% 100%",
-                              top: "-4px",
-                              left: "50%",
-                              marginLeft: "-1px",
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               {/* Social Media Icons */}
@@ -94,39 +68,23 @@ function About() {
 
             {/* Right Column - Content */}
             <motion.div
-              className="lg:pl-8"
+              className="lg:pl-8  bg-blue-500 absolute "
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               {/* Main Heading */}
-              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold text-gray-900 mb-12 tracking-tight">
+              <h1 className="text-6xl absolute left-[34vw] sm:text-7xl lg:text-8xl font-bold text-gray-900 mb-12 tracking-tight">
                 ABOUT US
               </h1>
 
               {/* Content */}
               <div className="space-y-6 text-gray-600 leading-relaxed">
-                <p className="text-lg">
-                  Code4Bharat started as a small internal design team in Bangalore, India. Today, we're a full-service
-                  digital agency with clients all over the world. We specialize in web development, mobile applications,
-                  and custom software solutions that help our clients and their customers achieve their goals.
+                <p className="text-lg ">
+                 At Code4Bharat, we specialize in delivering innovative IT solutions.
+                 From tailored software development to web design, we help businesses
+                 succeed in the digital world.
                 </p>
-
-                <p className="text-lg">
-                  Our team consists of passionate developers, designers, and strategists committed to creating digital
-                  experiences that have lasting impact. We understand that technology is essential, but we never lose
-                  sight of the human element that makes great digital experiences possible.
-                </p>
-
-                <p className="text-lg">
-                  We believe in building long-term partnerships with our clients, providing ongoing support and
-                  innovative solutions that grow with their business needs.
-                </p>
-              </div>
-
-              {/* Decorative Line */}
-              <div className="mt-12 pt-8 border-t border-gray-200">
-                <div className="w-16 h-1 bg-black"></div>
               </div>
             </motion.div>
           </div>

@@ -1,10 +1,9 @@
 "use client"
-
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
+import { gsap } from "gsap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faLightbulb, faCode, faRocket, faHandshake, faStar } from "@fortawesome/free-solid-svg-icons"
 import { motion } from "framer-motion"
-import { useInView } from "react-intersection-observer"
 import {
   HiArrowRight,
   HiCog,
@@ -13,93 +12,44 @@ import {
   HiShoppingCart,
   HiChartBar,
   HiTrendingUp,
-  HiChatAlt,
   HiSparkles,
 } from "react-icons/hi"
 import Navbar from "../components/navbar"
 
 function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 })
-  const [testimonialsRef, testimonialsInView] = useInView({ triggerOnce: true, threshold: 0.2 })
-
-  // Mouse tracking for background only
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [])
-
-  // Animated Text Component - Only animates once on page load
-  const AnimatedText = ({ text, className = "", delay = 0 }) => {
-    const words = text.split(" ")
-    return (
-      <div className={className}>
-        {words.map((word, index) => (
-          <motion.span
-            key={index}
-            className="inline-block mr-2"
-            initial={{ opacity: 0, y: 50, rotateX: -90 }}
-            animate={{ opacity: 1, y: 0, rotateX: 0 }}
-            transition={{
-              duration: 0.8,
-              delay: delay + index * 0.1,
-              ease: [0.25, 0.46, 0.45, 0.94],
-            }}
-          >
-            {word}
-          </motion.span>
-        ))}
-      </div>
-    )
-  }
-
-  // Character by character animation - Only animates once on page load
-  const AnimatedTextByChar = ({ text, className = "", delay = 0 }) => {
-    const chars = text.split("")
-    return (
-      <div className={className}>
-        {chars.map((char, index) => (
-          <motion.span
-            key={index}
-            className="inline-block"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.5,
-              delay: delay + index * 0.03,
-              ease: "easeOut",
-            }}
-          >
-            {char === " " ? "\u00A0" : char}
-          </motion.span>
-        ))}
-      </div>
-    )
-  }
+  const waveRef1 = useRef(null);
+  const waveRef2 = useRef(null);
+  const waveRef3 = useRef(null);
 
   const timelineItems = [
     {
+      number: "01",
+      label: "Plan",
       icon: faLightbulb,
       title: "Understanding your needs",
       desc: "At Code4bharat, we begin every project with a consultation to align our solutions with your business objectives and technology needs.",
       position: "left",
     },
     {
+      number: "02",
+      label: "Build",
       icon: faCode,
       title: "Customized Development",
       desc: "Our client-centered development process is flexible, allowing us to customize our approach for projects ranging from simple websites to complex enterprise applications",
       position: "right",
     },
     {
+      number: "03",
+      label: "Adapt",
       icon: faRocket,
       title: "Agile Methodology",
       desc: "We employ an agile development methodology to stay adaptable to changes in project scope, enabling incremental progress and allowing for your feedback throughout the process.",
       position: "left",
     },
     {
+      number: "04",
+      label: "Improve",
       icon: faHandshake,
       title: "Continuous improvement",
       desc: "We provide ongoing post-launch support, maintenance, and continuous improvement to keep your web platforms and IT infrastructure up-to-date and efficient as your business evolves.",
@@ -113,7 +63,7 @@ function Home() {
       description:
         "At Code4Bharat, we deliver tailored web development services, including custom websites, e-commerce platforms, and web applications with modern technologies.",
       icon: HiCog,
-      gradient: "from-blue-500 to-blue-700",
+      gradient: "from-blue-700 to-blue-900",
       features: ["Custom Websites", "E-commerce Platforms", "Web Applications", "Responsive Design"],
     },
     {
@@ -129,7 +79,7 @@ function Home() {
       description:
         "We help businesses navigate digital transformation with tailored solutions in technology strategy, cloud migration, and system integration.",
       icon: HiGlobeAlt,
-      gradient: "from-blue-500 to-blue-700",
+      gradient: "from-blue-800 to-blue-950",
       features: ["Digital Strategy", "Cloud Migration", "System Integration", "Tech Consulting"],
     },
     {
@@ -137,7 +87,7 @@ function Home() {
       description:
         "Code4Bharat provides complete e-commerce solutions, including storefront setup and payment integration, to create secure and scalable platforms.",
       icon: HiShoppingCart,
-      gradient: "from-blue-600 to-blue-800",
+      gradient: "from-blue-700 to-blue-900",
       features: ["Online Stores", "Payment Integration", "Inventory Management", "Analytics"],
     },
     {
@@ -145,7 +95,7 @@ function Home() {
       description:
         "We provide high-quality, cost-effective software solutions for international clients, including dedicated teams and ongoing support.",
       icon: HiChartBar,
-      gradient: "from-blue-500 to-blue-700",
+      gradient: "from-blue-600 to-blue-800",
       features: ["Dedicated Teams", "Quality Assurance", "24/7 Support", "Cost-Effective"],
     },
     {
@@ -153,7 +103,7 @@ function Home() {
       description:
         "Code4Bharat offers comprehensive digital marketing services such as SEO, social media management, and content marketing to boost your online presence.",
       icon: HiTrendingUp,
-      gradient: "from-blue-600 to-blue-800",
+      gradient: "from-blue-800 to-blue-950",
       features: ["SEO Optimization", "Social Media", "Content Marketing", "Analytics"],
     },
   ]
@@ -216,250 +166,131 @@ function Home() {
   ]
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 min-h-screen relative overflow-hidden">
+    <div className="relative bg-gradient-to-br from-white to-blue-50 min-h-screen overflow-hidden">
       <Navbar />
 
-      {/* Enhanced Animated Background Pattern */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 opacity-20">
-          <svg className="w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
-                <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#3b82f6" strokeWidth="0.5" opacity="0.4" />
-              </pattern>
-              <linearGradient id="circleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.1" />
-              </linearGradient>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
+      {/* Hero Content */}
+      <section className="relative h-screen flex items-center justify-start px-6 lg:px-20">
+        <div className="max-w-4xl text-left z-10 -mt-20">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-blue-900 leading-tight mb-6">
+            Boost Your Business with <br />
+            <span className="bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent">
+              Cutting-Edge IT Solutions
+            </span>
+          </h1>
 
-            {/* Enhanced Animated Circles */}
-            <motion.circle
-              cx="200"
-              cy="200"
-              r="120"
-              fill="url(#circleGradient)"
-              stroke="#3b82f6"
-              strokeWidth="2"
-              opacity="0.3"
-              animate={{ scale: [1, 1.3, 1], rotate: [0, 180, 360] }}
-              transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-            <motion.circle
-              cx="800"
-              cy="300"
-              r="100"
-              fill="url(#circleGradient)"
-              stroke="#1d4ed8"
-              strokeWidth="2"
-              opacity="0.25"
-              animate={{ scale: [1.2, 0.8, 1.2], rotate: [360, 180, 0] }}
-              transition={{ duration: 15, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-            <motion.circle
-              cx="600"
-              cy="700"
-              r="140"
-              fill="url(#circleGradient)"
-              stroke="#2563eb"
-              strokeWidth="2"
-              opacity="0.2"
-              animate={{ scale: [1, 1.4, 1], rotate: [0, -180, -360] }}
-              transition={{ duration: 18, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-            <motion.circle
-              cx="300"
-              cy="600"
-              r="80"
-              fill="url(#circleGradient)"
-              stroke="#1e40af"
-              strokeWidth="2"
-              opacity="0.35"
-              animate={{ scale: [1.1, 0.7, 1.1], rotate: [0, 270, 540] }}
-              transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-            />
-          </svg>
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-800 mb-8 leading-relaxed font-medium">
+            Unlock your full potential with our tailored technology services. From innovative software development to robust cybersecurity, we empower your business to thrive in the digital age with cutting-edge solutions.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button className="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-900 transition-all duration-300 flex items-center">
+              Get Started Today! <HiArrowRight className="inline ml-2 w-5 h-5" />
+            </button>
+            <button className="bg-white text-blue-800 border-2 border-blue-700 px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:bg-blue-50 transition-all duration-300">
+              Learn More
+            </button>
+          </div>
         </div>
 
-        {/* Enhanced Mouse Following Gradient */}
-        <motion.div
-          className="absolute w-96 h-96 bg-gradient-to-r from-blue-400/30 to-blue-600/20 rounded-full blur-3xl"
-          animate={{
-            x: mousePosition.x - 192,
-            y: mousePosition.y - 192,
-          }}
-          transition={{ type: "spring", damping: 25, stiffness: 150 }}
-        />
-        <motion.div
-          className="absolute w-64 h-64 bg-gradient-to-r from-blue-300/20 to-blue-500/15 rounded-full blur-2xl"
-          animate={{
-            x: mousePosition.x * 0.3 - 128,
-            y: mousePosition.y * 0.4 - 128,
-          }}
-          transition={{ type: "spring", damping: 35, stiffness: 120 }}
-        />
-      </div>
+        {/* Multiple GSAP River Animation Layers */}
+        <svg
+          ref={waveRef1}
+          className="absolute bottom-0 left-0 w-full h-[500px]"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+        >
+          <path
+            fill="#1E40AF"
+            fillOpacity="1"
+            d="M0,160L60,165.3C120,171,240,181,360,186.7C480,192,600,192,720,186.7C840,181,960,171,1080,176C1200,181,1320,203,1380,213.3L1440,224L1440,320L0,320Z"
+          ></path>
+        </svg>
 
-      {/* Hero Content - Fixed spacing */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 pt-4">
-        <div className="max-w-7xl mx-auto text-center z-10">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
-            <AnimatedText
-              text="Boost Your Business with"
-              className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 text-gray-800 leading-tight"
-              delay={0.2}
-            />
-            <AnimatedTextByChar
-              text="Cutting-Edge IT Solutions"
-              className="text-3xl md:text-5xl lg:text-7xl font-bold mb-8 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 bg-clip-text text-transparent leading-tight"
-              delay={1}
-            />
-          </motion.div>
+        <svg
+          ref={waveRef2}
+          className="absolute bottom-0 left-0 w-full h-[520px] opacity-70"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+        >
+          <path
+            fill="#1D4ED8"
+            fillOpacity="1"
+            d="M0,200L80,190C160,180,320,160,480,170C640,180,800,220,960,210C1120,200,1280,140,1360,110L1440,80L1440,320L0,320Z"
+          ></path>
+        </svg>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 2 }}
-          >
-            <p className="text-lg md:text-xl lg:text-2xl text-gray-700 mb-8 max-w-5xl mx-auto leading-relaxed font-medium px-4">
-              Unlock your full potential with our tailored technology services. From innovative software development to
-              robust cybersecurity, we empower your business to thrive in the digital age with cutting-edge solutions.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 2.5 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          >
-            <motion.button
-              className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-2xl inline-flex items-center space-x-2 hover:shadow-blue-500/30 transition-all duration-300"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 25px 50px rgba(59, 130, 246, 0.4)",
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span>Get Started Today!</span>
-              <HiArrowRight className="w-5 h-5" />
-            </motion.button>
-
-            <motion.button
-              className="bg-white/80 backdrop-blur-sm text-blue-700 px-8 py-4 rounded-xl text-lg font-semibold shadow-xl border border-blue-200 hover:bg-white transition-all duration-300"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 20px 40px rgba(59, 130, 246, 0.2)",
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              View Our Work
-            </motion.button>
-          </motion.div>
-        </div>
+        <svg
+          ref={waveRef3}
+          className="absolute bottom-0 left-0 w-full h-[540px] opacity-50"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+        >
+          <path
+            fill="#3B82F6"
+            fillOpacity="1"
+            d="M0,240L60,230C120,220,240,200,360,210C480,220,600,260,720,250C840,240,960,200,1080,190C1200,180,1320,200,1380,210L1440,220L1440,320L0,320Z"
+          ></path>
+        </svg>
       </section>
 
       {/* How it works - Responsive Design */}
-      <section ref={ref} className="py-12 md:py-20 px-4 relative bg-gradient-to-br from-white to-blue-50">
+      <section className="py-20 px-4 bg-white text-gray-800">
         <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12 md:mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent">
-              How It Works
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent">
+              How it works
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              Our proven 4-step process ensures your project success from concept to completion
+            <p className="text-xl text-gray-600 mt-4 max-w-2xl mx-auto">
+              Our proven process delivers exceptional results for every client
             </p>
-          </motion.div>
+          </div>
 
-          {/* Desktop Timeline */}
-          <div className="hidden lg:block relative">
+          <div className="relative">
             <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-400 to-blue-600 rounded-full"></div>
 
             {timelineItems.map((item, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, x: item.position === "left" ? -100 : 100 }}
-                animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.8, delay: index * 0.3 }}
-                className={`relative flex items-center w-full mb-16 ${
-                  item.position === "left" ? "justify-start" : "justify-end"
-                }`}
+                className={`relative flex flex-col lg:flex-row items-center justify-between mb-20 ${item.position === "left" ? "lg:flex-row-reverse" : ""}`}
               >
-                <div className={`w-1/2 ${item.position === "left" ? "pr-12" : "pl-12"}`}>
-                  <motion.div
-                    className="p-6 md:p-8 rounded-2xl shadow-2xl bg-white/90 backdrop-blur-sm border border-blue-100 transition-all duration-300 hover:shadow-blue-200/50"
-                    whileHover={{ y: -5, scale: 1.02 }}
-                  >
-                    <div className="flex items-center mb-6">
-                      <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl flex items-center justify-center mr-4 shadow-lg">
-                        <FontAwesomeIcon icon={item.icon} className="text-xl md:text-2xl text-white" />
-                      </div>
-                      <h3 className="text-xl md:text-2xl font-bold text-gray-800">{item.title}</h3>
-                    </div>
-                    <p className="text-gray-600 leading-relaxed text-base md:text-lg">{item.desc}</p>
-                  </motion.div>
+                <div className="w-full lg:w-1/3 flex justify-center mb-8 lg:mb-0">
+                  <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl px-6 py-4 text-center shadow-lg">
+                    <p className="text-lg font-bold text-white">{item.number}</p>
+                    <p className="text-sm text-blue-100">{item.label}</p>
+                  </div>
                 </div>
 
                 <motion.div
-                  className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full absolute left-1/2 text-white text-lg md:text-2xl font-bold transform -translate-x-1/2 flex items-center justify-center shadow-2xl border-4 border-white z-10"
-                  whileHover={{ scale: 1.1, rotate: 360 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="w-full lg:w-2/3 bg-gradient-to-r from-blue-50 to-white rounded-2xl p-8 shadow-xl border border-blue-100"
                 >
-                  {index + 1}
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Mobile/Tablet Timeline */}
-          <div className="lg:hidden space-y-8">
-            {timelineItems.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="relative"
-              >
-                <motion.div
-                  className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-2xl border border-blue-100 transition-all duration-300"
-                  whileHover={{ y: -3, scale: 1.01 }}
-                >
-                  <div className="flex items-start mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl flex items-center justify-center mr-4 shadow-lg flex-shrink-0">
-                      <FontAwesomeIcon icon={item.icon} className="text-lg text-white" />
+                  <div className="flex items-center mb-6">
+                    <div className="w-14 h-14 bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                      <FontAwesomeIcon icon={item.icon} className="text-xl text-white" />
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center mb-2">
-                        <span className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
-                          {index + 1}
-                        </span>
-                        <h3 className="text-lg md:text-xl font-bold text-gray-800">{item.title}</h3>
-                      </div>
-                      <p className="text-gray-600 leading-relaxed text-sm md:text-base">{item.desc}</p>
-                    </div>
+                    <h3 className="text-2xl font-bold text-blue-900">
+                      {item.title} <span className="ml-2 text-blue-600">&rarr;</span>
+                    </h3>
                   </div>
+                  <p className="text-gray-700 text-base leading-relaxed">{item.desc}</p>
                 </motion.div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Amazing Services Section - Same background as hero */}
-      <section className="py-20 px-4 relative z-10 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 overflow-hidden">
+      {/* Amazing Services Section */}
+      <section className="py-20 px-4 relative z-10 bg-gradient-to-br from-blue-50 to-white overflow-hidden">
         {/* Background Pattern for Services */}
         <div className="absolute inset-0 opacity-10">
           <svg className="w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
             <defs>
               <pattern id="servicesGrid" width="50" height="50" patternUnits="userSpaceOnUse">
-                <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#3b82f6" strokeWidth="0.5" opacity="0.4" />
+                <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#1E40AF" strokeWidth="0.5" opacity="0.4" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#servicesGrid)" />
@@ -468,7 +299,7 @@ function Home() {
               cy="150"
               r="80"
               fill="none"
-              stroke="#3b82f6"
+              stroke="#1D4ED8"
               strokeWidth="2"
               opacity="0.3"
               animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
@@ -479,7 +310,7 @@ function Home() {
               cy="200"
               r="60"
               fill="none"
-              stroke="#1d4ed8"
+              stroke="#3B82F6"
               strokeWidth="2"
               opacity="0.25"
               animate={{ scale: [1.1, 0.9, 1.1], rotate: [360, 180, 0] }}
@@ -499,10 +330,10 @@ function Home() {
           >
             <div className="flex items-center justify-center gap-3 mb-6">
               <HiSparkles className="w-8 h-8 text-blue-600" />
-              <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-gray-800 via-blue-800 to-gray-900 bg-clip-text text-transparent">
-                Amazing Services
+              <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-900 via-blue-700 to-blue-900 bg-clip-text text-transparent">
+                Our Services
               </h2>
-              <HiSparkles className="w-8 h-8 text-orange-500" />
+              <HiSparkles className="w-8 h-8 text-blue-600" />
             </div>
             <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
               At Code4Bharat, we drive your business forward with custom web and mobile app development, strategic IT
@@ -528,7 +359,7 @@ function Home() {
                 viewport={{ once: true }}
               >
                 <motion.div
-                  className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-blue-200/50 relative overflow-hidden h-full"
+                  className="bg-white rounded-3xl p-8 shadow-xl border border-blue-100 relative overflow-hidden h-full"
                   whileHover={{
                     scale: 1.03,
                     y: -10,
@@ -569,7 +400,7 @@ function Home() {
                   <div className="relative z-10">
                     {/* Icon */}
                     <motion.div
-                      className={`w-20 h-20 bg-gradient-to-r ${service.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:bg-white/20 group-hover:backdrop-blur-sm transition-all duration-500`}
+                      className={`w-20 h-20 bg-gradient-to-r ${service.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:bg-white/20 group-hover:backdrop-blur-sm transition-all duration-500`}
                       whileHover={{ rotate: 360, scale: 1.1 }}
                       transition={{ duration: 0.6 }}
                     >
@@ -586,19 +417,27 @@ function Home() {
                       {service.description}
                     </p>
 
+                    {/* Features */}
+                    <div className="mt-6">
+                      <h4 className="text-sm font-semibold text-blue-700 group-hover:text-blue-200 mb-2">KEY FEATURES:</h4>
+                      <ul className="grid grid-cols-2 gap-2">
+                        {service.features.map((feature, i) => (
+                          <li key={i} className="flex items-center">
+                            <svg className="w-4 h-4 text-blue-600 group-hover:text-blue-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span className="text-sm text-gray-700 group-hover:text-blue-100">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </motion.div>
               </motion.div>
             ))}
           </motion.div>
-
-          
         </div>
       </section>
-
-      
-
-     
     </div>
   )
 }
