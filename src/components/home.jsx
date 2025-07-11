@@ -15,6 +15,7 @@ import {
   HiSparkles,
 } from "react-icons/hi"
 import Navbar from "../components/navbar"
+import Footer from "./footer"
 
 function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
